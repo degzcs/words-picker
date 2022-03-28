@@ -27,6 +27,10 @@ class Api::V1::EntitiesController < ApplicationController
     params.permit(:text, :type)
   end
 
+  def entity
+    Entity.find(params[:id])
+  end
+
   def sentence
     Sentence.find(params[:sentence_id])
   end

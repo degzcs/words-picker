@@ -22,4 +22,20 @@ describe Api::V1::EntitiesController do
       end
     end
   end
+
+  context 'update' do
+    let(:body_res) do
+      put "/api/v1/sentences/#{sentence.id}/entities/#{entity.id}", params: params
+      JSON.parse(response.body)
+    end
+
+    context 'given a sentence and an entity' do
+      let(:sentence) { Sentence.create(text: 'Apple is looking at buying UK startup for  $1 billion') }
+      let(:entity) { Entity.create!(text: 'old_text', type: 'old_type', sentence: sentence) }
+
+      it 'should update one entity' do
+        expect(body_res).to include params.as_json
+      end
+    end
+  end
 end
