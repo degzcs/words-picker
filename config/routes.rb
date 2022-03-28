@@ -6,4 +6,6 @@ Rails.application.routes.draw do
       end
     end
   end
+  root 'single_page#index'
+  get '/*path' => 'single_page#index'
 end
