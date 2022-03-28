@@ -1,19 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Sewntences from "../containers/Sentences/Index.jsx";
-const Routes = () => {
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Sentences from "../containers/Sentences/Index.jsx";
+const R = () => {
   return (
     <>
       <Router>
-        <Header />
-        <Switch>
+        <Routes>
           <Route path="/" exact component={Sentences} />
-          />
-        </Switch>
-        <Footer />
+        </Routes>
       </Router>
     </>
   );
 };
 
-export default Routes;
+export default R;
