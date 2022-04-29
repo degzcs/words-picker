@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes} from "react-router-dom";
-import Sentenses from "../containers/Sentenses/Index.jsx";
-import Sentense from "../components/Sentense/Index.jsx";
+import Sentences from "../containers/Sentences/Index.jsx";
+import Sentence from "../components/Sentence/Index.jsx";
 
 const ARoutes = () => {
   return (
@@ -10,12 +10,12 @@ const ARoutes = () => {
         <Routes>
           <Route
             path="/" exact
-            element={<Sentenses />}
+            element={<Sentences />}
           />
           <Route
-            path="/sentenses/:id"
+            path="/sentences/:id"
             exact
-            element={<Sentense/>}
+            element={<Sentence/>}
           />
         </Routes>
       </BrowserRouter>

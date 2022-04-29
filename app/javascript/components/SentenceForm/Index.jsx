@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const SentenseForm = ({ metaSentense, entities, editable, onClickWord, removeEntity }) => {
+const SentenceForm = ({ metaSentence, entities, editable, onClickWord, removeEntity }) => {
   const isAMetaWord = (word) =>{
     return word.match(/<index-[0-9]+>/g)
   }
@@ -12,7 +12,7 @@ const SentenseForm = ({ metaSentense, entities, editable, onClickWord, removeEnt
   return(
         <>
           {
-            metaSentense.map((word, index) => {
+            metaSentence.map((word, index) => {
               if(isAMetaWord(word)){
                 const position = getIndexFrom(word)
                 const text = entities[position].text
@@ -62,4 +62,4 @@ const SentenseForm = ({ metaSentense, entities, editable, onClickWord, removeEnt
   );
 };
 
-export default SentenseForm;
+export default SentenceForm;

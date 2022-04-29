@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from "react";
-import SentenseForm from "components/SentenseForm/Index.jsx"
+import SentenceForm from "components/SentenceForm/Index.jsx"
 import EntityForm from "components/EntityForm/Index.jsx"
 import { useParams, useHistory } from "react-router-dom";
-import { getMetaSentenses, getMetaData } from "components/Utils.js";
+import { getMetaSentences, getMetaData } from "components/Utils.js";
 
-const Sentense = ({ sentenseId, updateMSentences }) => {
-  const [metaSentense, setMetaSentense] = useState([]);
-  const [sentense, setSentense] = useState('');
+const Sentence = ({ sentenceId, updateMSentences }) => {
+  const [metaSentence, setMetaSentence] = useState([]);
+  const [sentence, setSentence] = useState({text: null, id: null});
   const [entities, setEntities] = useState([]);
   const [type, setType] = useState('');
   const [selectedWords, setSelectedWords] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
-    const getSentense = async () => {
-      const recordId = id || sentenseId
-      const sentenseFromServer = await fetchSentense(recordId);
-      setSentense(sentenseFromServer.sentense.text);
-      setEntities(sentenseFromServer.entities);
-      setMetaSentense(getMetaData(sentenseFromServer.sentense.text, sentenseFromServer.entities));
+    const getSentence = async () => {
+      const recordId = id || sentenceId
+      const sentenceFromServer = await fetchSentence(recordId);
+      setSentence(sentenceFromServer.sentence);
+      setEntities(sentenceFromServer.entities);
+      setMetaSentence(getMetaData(sentenceFromServer.sentence.text, sentenceFromServer.entities));
     }
 
-    getSentense(id);
+    getSentence(id);
   }, []);
 
-  // Fetch Sentenses and Entities
-  const fetchSentense= async (id) => {
+  // Fetch sentences and Entities
+  const fetchSentence= async (id) => {
     const token = document.querySelector('meta[name="csrf-token"]').content;
     const res = await fetch(
       `http://127.0.1:3000/api/v1/sentences/${id}.json`,
@@ -43,7 +43,7 @@ const Sentense = ({ sentenseId, updateMSentences }) => {
     const data = await res.json();
 
     //return data;
-    return {sentense: {text :'this is a test', id: 1}, entities: [{text: 'test', type: 'tag'}]};
+    return {sentence: {text :'this is a test', id: 1}, entities: [{text: 'test', type: 'tag'}]};
   };
 
   // Events
@@ -59,7 +59,7 @@ const Sentense = ({ sentenseId, updateMSentences }) => {
       return index != position
     })
     // TODO call backend to remove the entity
-    updateSentense(newEntities)
+    updateSentence(newEntities)
   };
 
   const addEntity = (words, type) => {
@@ -67,13 +67,13 @@ const Sentense = ({ sentenseId, updateMSentences }) => {
     if(words == []) return
     const newEntities = [...entities, { text: words.join(' '), type: type }];
     // TODO call backend to add the new entity
-    updateSentense(newEntities)
+    updateSentence(newEntities)
     cleanFields()
   };
 
-  const updateSentense = (newEntities) => {
+  const updateSentence = (newEntities) => {
     setEntities(newEntities);
-    setMetaSentense(getMetaData(sentense, newEntities))
+    setMetaSentence(getMetaData(sentence.text, newEntities))
   };
 
   const cleanFields = () => {
@@ -88,12 +88,12 @@ const Sentense = ({ sentenseId, updateMSentences }) => {
   const onClickUpdate = (id) => {
     console.log('calling the backend')
     // TODO call backend and update record
-    updateMSentences(id, sentense, entities)
+    updateMSentences(sentence, entities)
   };
 
   return(
     <>
-      <div className="modal fade" id="editForm" tabindex="-1" aria-labelledby="editFormLabel" aria-hidden="true">
+      <div className="modal fade" id="editForm" tabIndex="-1" aria-labelledby="editFormLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -104,8 +104,8 @@ const Sentense = ({ sentenseId, updateMSentences }) => {
 
               <div className="row pt-0" >
                 <div className="col-md-12" >
-                  <SentenseForm
-                    metaSentense={metaSentense}
+                  <SentenceForm
+                    metaSentence={metaSentence}
                     onClickWord={onClickWord}
                     removeEntity={removeEntity}
                     entities={entities}
@@ -126,7 +126,7 @@ const Sentense = ({ sentenseId, updateMSentences }) => {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => onClickUpdate(sentense.id)}
+                onClick={() => onClickUpdate(sentence.id)}
               >
                   UPDATE
               </button>
@@ -138,4 +138,4 @@ const Sentense = ({ sentenseId, updateMSentences }) => {
   )
 }
 
-export default Sentense;
+export default Sentence;

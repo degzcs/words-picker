@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import SentenseForm from "../../components/SentenseForm/Index.jsx"
-import Sentense from "../../components/Sentense/Index.jsx"
+import SentenceForm from "../../components/SentenceForm/Index.jsx"
+import Sentence from "../../components/Sentence/Index.jsx"
 import EntityForm from "../../components/EntityForm/Index.jsx"
 import { Link } from "react-router-dom";
-import { getMetaSentenses } from "../../components/Utils.js"
+import { getMetaSentences } from "../../components/Utils.js"
 import { BrowserRouter as Router} from "react-router-dom";
 
-const Sentenses = () => {
-  const [metaSentenses, setMetaSentenses] = useState([]);
+const Sentences = () => {
+  const [metaSentences, setMetaSentences] = useState([]);
   const [sentenceId, setSentenceId] = useState(null);
 
   const text1= 'Apple is looking at buying U.K. startup for $1 billion. Apple'
@@ -23,25 +23,25 @@ const Sentenses = () => {
     {text: '3 year', type: 'TIME'}
   ]
   const response = [
-    {sentense: { text: text1, id: 1 }, entities: entities1},
-    {sentense: { text: text2, id: 2 }, entities: entities2}
+    {sentence: { text: text1, id: 1 }, entities: entities1},
+    {sentence: { text: text2, id: 2 }, entities: entities2}
   ]
 
-  const [sentenses, setSentenses] = useState(response);
+  const [sentences, setSentences] = useState(response);
 
   useEffect(() => {
-    // TODO call sentense from the backend
-    setMetaSentenses(getMetaSentenses(sentenses));
+    // TODO call sentence from the backend
+    setMetaSentences(getMetaSentences(sentences));
   }, [])
 
   const onClickEdit = (id) => {
     setSentenceId(id)
   }
 
-  const updateMSentences = (id, updatedText, updatedEntities) => {
-    const sentenceIndex = sentenses.findIndex((sentence => sentence.id == id));
-    sentenses[sentenceIndex] = { sentense: {text: updatedText, id: id}, entities: updatedEntities };
-    setMetaSentenses(getMetaSentenses(sentenses));
+  const updateMSentences = (updatedSentence, updatedEntities) => {
+    const sentenceIndex = sentences.findIndex(item => item.sentence.id == updatedSentence.id );
+    sentences[sentenceIndex] = { sentence: updatedSentence, entities: updatedEntities };
+    setMetaSentences(getMetaSentences(sentences));
   }
 
   return(
@@ -49,12 +49,12 @@ const Sentenses = () => {
       <div className="row">
         <div className="col-md-12">
           {
-             metaSentenses.map(({metaSentense, sentense, entities}) => {
+             metaSentences.map(({metaSentence, sentence, entities}) => {
                return(
                 <div className="d-flex justify-content-between pb-2">
                   <div className="" >
-                    <SentenseForm
-                      metaSentense={metaSentense}
+                    <SentenceForm
+                      metaSentence={metaSentence}
                       entities={entities}
                       editable={false}
                       />
@@ -63,7 +63,7 @@ const Sentenses = () => {
                     <button
                       className="btn btn-light shadow p-2 bg-body"
                       type="button" data-bs-toggle="modal" data-bs-target="#editForm"
-                      onClick={() => onClickEdit(sentense.id)}
+                      onClick={() => onClickEdit(sentence.id)}
                     >
                         EDIT
                     </button>
@@ -73,7 +73,7 @@ const Sentenses = () => {
             })
           }
           {
-            sentenceId && ( <Sentense sentenseId={sentenceId} updateMSentences={updateMSentences} />)
+            sentenceId && ( <Sentence sentenceId={sentenceId} updateMSentences={updateMSentences} />)
           }
         </div>
       </div>
@@ -81,4 +81,4 @@ const Sentenses = () => {
   )
 }
 
-export default Sentenses;
+export default Sentences;

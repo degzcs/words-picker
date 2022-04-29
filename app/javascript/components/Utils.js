@@ -6,13 +6,13 @@ export const getMetaData = (fullText, entities) => {
   return fullText.split(' ')
 }
 
-export const getMetaSentenses = (sentenses) => {
+export const getMetaSentences = (sentences) => {
   var ms = []
-  sentenses.map(({sentense, entities}) => {
+  sentences.map(({sentence, entities}) => {
     ms = [...ms,
       {
-        metaSentense: getMetaData(sentense.text, entities),
-        sentense: sentense,
+        metaSentence: getMetaData(sentence.text, entities),
+        sentence: sentence,
         entities: entities
       }
     ];
