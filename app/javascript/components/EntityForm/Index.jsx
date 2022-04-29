@@ -2,9 +2,29 @@ import React from "react";
 
 const EntityForm = ({ selectedWords, type, onChangeType, addEntity }) => {
   return(
-        <div className="d-flex justify-content-between">
+        <div className="">
+          <div className="row">
+            <div className="col-12">
+              <span
+                className="badge text-dark pt-3 pb-3 bg-info bg-gradient bg-opacity-50"
+                key='selected-words'
+              >
+                {selectedWords.join(' ')}
+              </span>
+              {
+                selectedWords.length == 0 && (
+                  <span
+                    className="badge text-muted pt-3 pb-3 bg-light bg-gradient bg-opacity-50"
+                    key='selected-words-placeholder'
+                  >
+                    {'Pick some words ...'}
+                  </span>
+                )
+              }
+            </div>
+          </div>
 
-          <div className="d-flex justify-content-start pt-3">
+          <div className="d-flex justify-content-start">
             <div className="pt-1 me-2">
               <input
                 type="text"
@@ -17,27 +37,10 @@ const EntityForm = ({ selectedWords, type, onChangeType, addEntity }) => {
                 onChange={(e) => onChangeType(e)}
               />
             </div>
-            <div className="mx-5">
-              <span
-                className="badge text-dark p-3 bg-info bg-gradient bg-opacity-50"
-                key='selected-words'
-              >
-                {selectedWords.join(' ')}
-              </span>
-            </div>
-          </div>
-
-          <div className="d-flex justify-content-end">
             <div className="">
               <button className="btn btn-light shadow p-2 bg-body"
                 onClick={() => addEntity(selectedWords, type)}>
                 ADD ENTITY
-              </button>
-            </div>
-            <div className="mx-2">
-              <button className="btn btn-success bg-opacity-25 shadow p-2 "
-                onClick={ () => {} }>
-                UPDATE
               </button>
             </div>
           </div>

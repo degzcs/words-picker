@@ -4,7 +4,7 @@ import EntityForm from "components/EntityForm/Index.jsx"
 import { useParams, useHistory } from "react-router-dom";
 import { getMetaSentenses, getMetaData } from "components/Utils.js";
 
-const Sentense = () => {
+const Sentense = ({ sentenseId, updateMSentences }) => {
   const [metaSentense, setMetaSentense] = useState([]);
   const [sentense, setSentense] = useState('');
   const [entities, setEntities] = useState([]);
@@ -14,7 +14,8 @@ const Sentense = () => {
 
   useEffect(() => {
     const getSentense = async () => {
-      const sentenseFromServer = await fetchSentense(id);
+      const recordId = id || sentenseId
+      const sentenseFromServer = await fetchSentense(recordId);
       setSentense(sentenseFromServer.sentense.text);
       setEntities(sentenseFromServer.entities);
       setMetaSentense(getMetaData(sentenseFromServer.sentense.text, sentenseFromServer.entities));
@@ -84,27 +85,55 @@ const Sentense = () => {
     setType(e.target.value.toUpperCase());
   };
 
+  const onClickUpdate = (id) => {
+    console.log('calling the backend')
+    // TODO call backend and update record
+    updateMSentences(id, sentense, entities)
+  };
+
   return(
     <>
-    <div className="container">
-      <div className="row pt-5" >
-        <div className="col-md-12" >
-          <SentenseForm
-            metaSentense={metaSentense}
-            onClickWord={onClickWord}
-            removeEntity={removeEntity}
-            entities={entities}
-            editable={true}
-            />
+      <div className="modal fade" id="editForm" tabindex="-1" aria-labelledby="editFormLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="editFormLabel">Edit</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+
+              <div className="row pt-0" >
+                <div className="col-md-12" >
+                  <SentenseForm
+                    metaSentense={metaSentense}
+                    onClickWord={onClickWord}
+                    removeEntity={removeEntity}
+                    entities={entities}
+                    editable={true}
+                    />
+                </div>
+              </div>
+              <EntityForm
+                selectedWords={selectedWords}
+                type={type}
+                onChangeType={onChangeType}
+                addEntity={addEntity}
+              />
+
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => onClickUpdate(sentense.id)}
+              >
+                  UPDATE
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <EntityForm
-        selectedWords={selectedWords}
-        type={type}
-        onChangeType={onChangeType}
-        addEntity={addEntity}
-      />
-    </div>
     </>
   )
 }
