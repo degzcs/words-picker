@@ -34,6 +34,12 @@ const EntityForm = ({ selectedWords, type, onChangeType, addEntity }) => {
                 ADD ENTITY
               </button>
             </div>
+            <div className="mx-2">
+              <button className="btn btn-success bg-opacity-25 shadow p-2 "
+                onClick={ () => {} }>
+                UPDATE
+              </button>
+            </div>
           </div>
         </div>
 

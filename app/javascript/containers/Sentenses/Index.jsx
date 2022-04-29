@@ -39,17 +39,15 @@ const Sentenses = ({ sentenses}) => {
     return ms;
   }
 
-  const updateMetaSentenses = () => {
-    //TODO find in the array of MSs by content
-    // and then update the content
-
+  const updateSentenses = () => {
+    //TODO update sentense and entity model in the backend
+    //reload all sentences
   }
 
   const setCurrentItem = (sentense, entities) => {
     setCurrentSentense(sentense)
     setCurrentEntities(entities)
     setCurrentMSentense(getMetaData(sentense, entities))
-    console.log(currentMSentense)
   }
 
   const onClickWord = (word) => {
@@ -60,17 +58,19 @@ const Sentenses = ({ sentenses}) => {
   };
 
   const removeEntity = (position) => {
-    const newEntities = entities.filter((value, index, array) => {
+    const newEntities = currentEntities.filter((value, index, array) => {
       return index != position
     })
+    // TODO call backend to remove the entity
     setCurrentEntities(newEntities);
-    setCurrentMSentense(getMetaData(sentense, newEntities))
+    setCurrentMSentense(getMetaData(currentSentense, newEntities))
   };
 
   const addEntity = (words, type) => {
     if(type == '') return
     if(words == []) return
     const newEntities = [...currentEntities, {text: words.join(' '), type: type }];
+    // TODO call backend to add the new entity
     setCurrentEntities(newEntities);
     setCurrentMSentense(getMetaData(currentSentense, newEntities))
     setType('');
