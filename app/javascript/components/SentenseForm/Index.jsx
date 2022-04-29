@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const SentenseForm = ({ metaSentense, entities, onClickWord, removeEntity, editable }) => {
+const SentenseForm = ({ metaSentense, entities, editable, onClickWord, removeEntity }) => {
   const isAMetaWord = (word) =>{
     return word.match(/<index-[0-9]+>/g)
   }
@@ -24,11 +24,15 @@ const SentenseForm = ({ metaSentense, entities, onClickWord, removeEntity, edita
                       className="badge text-dark p-3 bg-info bg-gradient bg-opacity-50"
                     >
                       {text + ' '}
-                      <b className="px-2">{type}</b>
+                      <b
+                        key={'type_' + text + position}
+                        className="px-2">{type}</b>
                     </span>
                     {
-                      editable &&
-                      <span className="position-relative me-2 cursor-pointer">
+                      editable && (
+                      <span
+                        key={'wrapper_' + type + position}
+                        className="position-relative me-2 cursor-pointer">
                           <span
                             key={type + position}
                             className="badge bg-secondary p-1 text-light bg-opacity-75 position-absolute top-0 start-50 translate-middle"
@@ -37,6 +41,7 @@ const SentenseForm = ({ metaSentense, entities, onClickWord, removeEntity, edita
                            -
                           </span>
                        </span>
+                      )
                     }
                   </>
                 )
@@ -44,18 +49,17 @@ const SentenseForm = ({ metaSentense, entities, onClickWord, removeEntity, edita
                 return(
                   <span
                     key={word + index}
-                    className="mx-1 cursor-pointer"
-                    onClick={() => onClickWord(word)}
+                    className={ editable? "mx-1 cursor-pointer" : "mx-1" }
+                    onClick={() => editable ? onClickWord(word) : {}}
                   >
-                  {word}&nbsp;
-                </span>
+                    {word + ' '}
+                  </span>
                 )
               }
             })
           }
-    </>
-
+      </>
   );
-}
+};
 
 export default SentenseForm;

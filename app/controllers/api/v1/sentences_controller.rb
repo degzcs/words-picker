@@ -1,6 +1,6 @@
 class Api::V1::SentencesController < ApplicationController
   def index
-    sentences = Sentences.all
+    sentences = ::Sentences.all
     if sentences
       render json: sentences
     else

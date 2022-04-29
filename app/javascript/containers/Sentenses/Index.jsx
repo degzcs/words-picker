@@ -1,85 +1,38 @@
 import React, { useState, useEffect } from "react";
 import SentenseForm from "../../components/SentenseForm/Index.jsx"
 import EntityForm from "../../components/EntityForm/Index.jsx"
+import { Link } from "react-router-dom";
+import { getMetaSentenses } from "../../components/Utils.js"
+import { BrowserRouter as Router} from "react-router-dom";
 
-const Sentenses = ({ sentenses}) => {
+const Sentenses = () => {
   const [metaSentenses, setMetaSentenses] = useState([]);
-  const [currentMSentense, setCurrentMSentense] = useState([]);
-  const [currentEntities, setCurrentEntities] = useState([]);
-  const [currentSentense, setCurrentSentense] = useState('');
   const [type, setType] = useState('');
   const [selectedWords, setSelectedWords] = useState([]);
 
+  const text1= 'Apple is looking at buying U.K. startup for $1 billion. Apple'
+  const entities1 =[ {text: 'Apple', type: 'ORG'},
+    {text: 'U.K.', type: 'GPE'},
+    {text: '$1 billion', type: 'MONEY'}
+  ]
+  const text2= 'Regional funds with exposure to United States and outperform equity market over 3 year'
+  const entities2 =[
+    {text: 'Regional funds', type: 'THEME'},
+    {text: 'United States.', type: 'GPE'},
+    {text: 'equity market', type: 'THEME'},
+    {text: '3 year', type: 'TIME'}
+  ]
+  const response = [
+    {sentense: { text: text1, id: 1 }, entities: entities1},
+    {sentense: { text: text2, id: 2 }, entities: entities2}
+  ]
+
+  const [sentenses, setSentenses] = useState(response);
 
   useEffect(() => {
+    // TODO call sentense from the backend
     setMetaSentenses(getMetaSentenses(sentenses));
-    setCurrentItem(sentenses[0].sentense, sentenses[0].entities)
   }, [])
-
-  const getMetaData = (fullText, entities) => {
-    entities.map(({text, type},index)=>{
-      fullText= fullText.replaceAll(text, '<index-'+index+'>')
-    })
-
-    return fullText.split(' ')
-  }
-
-  const getMetaSentenses = (group) => {
-    var ms = []
-    group.map(({sentense, entities}) => {
-      ms = [...ms,
-        {
-          metaSentense: getMetaData(sentense, entities),
-          sentense: sentense,
-          entities: entities
-        }
-      ];
-    })
-
-    return ms;
-  }
-
-  const updateSentenses = () => {
-    //TODO update sentense and entity model in the backend
-    //reload all sentences
-  }
-
-  const setCurrentItem = (sentense, entities) => {
-    setCurrentSentense(sentense)
-    setCurrentEntities(entities)
-    setCurrentMSentense(getMetaData(sentense, entities))
-  }
-
-  const onClickWord = (word) => {
-    // TODO select contigous words. Add index of the array to know this
-    // TODO uniq words. use filter function here
-    // TODO avoid selec <index-\d> elements
-    setSelectedWords([...selectedWords, word]);
-  };
-
-  const removeEntity = (position) => {
-    const newEntities = currentEntities.filter((value, index, array) => {
-      return index != position
-    })
-    // TODO call backend to remove the entity
-    setCurrentEntities(newEntities);
-    setCurrentMSentense(getMetaData(currentSentense, newEntities))
-  };
-
-  const addEntity = (words, type) => {
-    if(type == '') return
-    if(words == []) return
-    const newEntities = [...currentEntities, {text: words.join(' '), type: type }];
-    // TODO call backend to add the new entity
-    setCurrentEntities(newEntities);
-    setCurrentMSentense(getMetaData(currentSentense, newEntities))
-    setType('');
-    setSelectedWords([]);
-  };
-
-  const onChangeType = (e) => {
-    setType(e.target.value.toUpperCase());
-  };
 
   return(
     <div className="container">
@@ -90,45 +43,23 @@ const Sentenses = ({ sentenses}) => {
               <div className="" >
                 <SentenseForm
                   metaSentense={metaSentense}
-                  onClickWord={onClickWord}
-                  removeEntity={removeEntity}
                   entities={entities}
                   editable={false}
                   />
               </div>
               <div className="" >
-                <button className="btn btn-light shadow p-2 bg-body"
-                  onClick={() => setCurrentItem(sentense, entities)}>
+                <Link
+                  className="btn btn-light shadow p-2 bg-body"
+                  to={`/sentenses/${sentense.id}`}
+                >
                     EDIT
-                </button>
+                </Link>
               </div>
             </div>
            )
-      })
-    }{
-      currentMSentense && (
-        <>
-          <div className="row pt-5" >
-            <div className="col-md-12" >
-            <SentenseForm
-              metaSentense={currentMSentense}
-              onClickWord={onClickWord}
-              removeEntity={removeEntity}
-              entities={currentEntities}
-              editable={true}
-              />
-            </div>
-          </div>
-          <EntityForm
-            selectedWords={selectedWords}
-            type={type}
-            onChangeType={onChangeType}
-            addEntity={addEntity}
-          />
-        </>
-      )
-    }
-  </div>
+        })
+      }
+    </div>
   )
 }
 
