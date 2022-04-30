@@ -11,7 +11,7 @@ class Api::V1::SentencesController < ApplicationController
   def create
     sentence = Sentence.create(sentences_params)
     if sentence
-      render json: sentence
+      render json: {sentence: sentence, entities: sentence.entities}
     else
       render json: sentence.errors
     end
@@ -19,7 +19,7 @@ class Api::V1::SentencesController < ApplicationController
 
   def show
     if sentence
-      render json: sentence
+      render json: {sentence: sentence, entities: sentence.entities}
     else
       render json: sentence.errors
     end
@@ -27,7 +27,7 @@ class Api::V1::SentencesController < ApplicationController
 
   def update
     if sentence.update(sentences_params)
-      render json: sentence
+      render json: {sentence: sentence, entities: sentence.entities}
     else
       render json: sentence.errors
     end

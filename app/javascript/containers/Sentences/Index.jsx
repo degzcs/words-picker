@@ -42,6 +42,7 @@ const Sentences = () => {
     const sentenceIndex = sentences.findIndex(item => item.sentence.id == updatedSentence.id );
     sentences[sentenceIndex] = { sentence: updatedSentence, entities: updatedEntities };
     setMetaSentences(getMetaSentences(sentences));
+    setSentenceId(null)
   }
 
   return(
@@ -49,9 +50,9 @@ const Sentences = () => {
       <div className="row">
         <div className="col-md-12">
           {
-             metaSentences.map(({metaSentence, sentence, entities}) => {
+             metaSentences.map(({metaSentence, sentence, entities}, index) => {
                return(
-                <div className="d-flex justify-content-between pb-2">
+                <div key={index} className="d-flex justify-content-between pb-2">
                   <div className="" >
                     <SentenceForm
                       metaSentence={metaSentence}

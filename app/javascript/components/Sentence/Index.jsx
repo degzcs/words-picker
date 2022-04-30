@@ -42,8 +42,7 @@ const Sentence = ({ sentenceId, updateMSentences }) => {
     if (!res) return;
     const data = await res.json();
 
-    //return data;
-    return {sentence: {text :'this is a test', id: 1}, entities: [{text: 'test', type: 'tag'}]};
+    return data;
   };
 
   // Events
@@ -92,9 +91,8 @@ const Sentence = ({ sentenceId, updateMSentences }) => {
   };
 
   return(
-    <>
       <div className="modal fade" id="editForm" tabIndex="-1" aria-labelledby="editFormLabel" aria-hidden="true">
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-xl">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="editFormLabel">Edit</h5>
@@ -126,7 +124,8 @@ const Sentence = ({ sentenceId, updateMSentences }) => {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => onClickUpdate(sentence.id)}
+                data-bs-dismiss="modal"
+                onClick={() =>  onClickUpdate(sentence.id) }
               >
                   UPDATE
               </button>
@@ -134,7 +133,6 @@ const Sentence = ({ sentenceId, updateMSentences }) => {
           </div>
         </div>
       </div>
-    </>
   )
 }
 
