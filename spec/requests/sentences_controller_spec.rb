@@ -16,7 +16,7 @@ describe Api::V1::SentencesController do
       let(:sentence) { Sentence.create(text: text) }
 
       it 'should create one entity' do
-        expect(body_res).to include params.as_json
+        expect(body_res['sentence']).to include params.as_json
       end
     end
   end
@@ -31,7 +31,7 @@ describe Api::V1::SentencesController do
       let(:sentence) { Sentence.create(text: 'text with typo') }
 
       it 'should update one entity' do
-        expect(body_res).to include params.as_json
+        expect(body_res['sentence']).to include params.as_json
       end
     end
   end

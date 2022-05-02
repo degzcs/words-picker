@@ -38,4 +38,6 @@ describe Api::V1::EntitiesController do
       end
     end
   end
+
+  context 'create bulk import specs'
 end

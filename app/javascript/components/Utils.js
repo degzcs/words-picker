@@ -9,6 +9,8 @@ export const getMetaData = (fullText, entities) => {
 export const getMetaSentences = (sentences) => {
   var ms = []
   sentences.map(({sentence, entities}) => {
+    //TODO update entities array with diffent color here
+    // and read that color in EntityForm and SenteceForm
     ms = [...ms,
       {
         metaSentence: getMetaData(sentence.text, entities),

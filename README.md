@@ -1,24 +1,24 @@
-# README
+# Word picker
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 6 app + Reacjs App + Boostrap
+Application that allows add tags to each word for a group of sentences.
 
-Things you may want to cover:
 
-* Ruby version
+## Screenshots
 
-* System dependencies
 
-* Configuration
+## Install
 
-* Database creation
+```bash
+$ bundle install
+```
 
-* Database initialization
+## Run test
 
-* How to run the test suite
+```bash
+$ rspec spec
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## Improvements
+- Check for all TODOs comments throughout the backend and frontend code.
 
-* Deployment instructions
-
-* ...
