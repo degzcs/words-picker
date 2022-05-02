@@ -16,6 +16,13 @@ class Api::V1::EntitiesController < ApplicationController
     end
   end
 
+  def bulk_entities_update
+    entities = bulk_params[:entities].map {|entity_attrs| Entity.new(entity_attrs) }
+    sentence.entities = entities
+
+    render json: {entities: sentence.reload.entities}
+  end
+
   def destroy
     entity&.destroy
     render json: { message: 'entity destroyed!' }
@@ -25,6 +32,10 @@ class Api::V1::EntitiesController < ApplicationController
 
   def entities_params
     params.permit(:text, :type)
+  end
+
+  def bulk_params
+    params.permit(entities: [:id, :text, :type])
   end
 
   def entity

@@ -1,8 +1,13 @@
 class Api::V1::SentencesController < ApplicationController
   def index
-    sentences = ::Sentences.all
+    # TODO use ActiveRecord serializer
+    # TODO add pagination
+    sentences = Sentence.all
+    serialized_sentences = sentences.map do |sentence|
+      { sentence: sentence, entities: sentence.entities }
+    end
     if sentences
-      render json: sentences
+      render json: serialized_sentences
     else
       render json: sentences.errors
     end

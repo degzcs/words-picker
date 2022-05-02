@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :sentences do
         resources :entities, only: [:create, :update, :destroy]
+        put 'bulk-entities-update', to: 'entities#bulk_entities_update'
       end
     end
   end

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SentenceForm from "components/SentenceForm/Index.jsx"
 import EntityForm from "components/EntityForm/Index.jsx"
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getMetaSentences, getMetaData } from "components/Utils.js";
 
 const Sentence = ({ sentenceId, updateMSentences }) => {
@@ -84,10 +84,34 @@ const Sentence = ({ sentenceId, updateMSentences }) => {
     setType(e.target.value.toUpperCase());
   };
 
+  const updateCall = async (id) => {
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+
+    const res = await fetch(
+      `http://localhost:3000/api/v1/sentences/${id}/bulk-entities-update`,
+      {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          "X-CSRF-Token": token,
+        },
+        body: JSON.stringify({ entities: entities }),
+      }
+    ).catch((e) => {
+      console.log(e)
+    });
+
+    if (!res) return;
+    const data = await res.json();
+    return data;
+  };
   const onClickUpdate = (id) => {
-    console.log('calling the backend')
-    // TODO call backend and update record
-    updateMSentences(sentence, entities)
+    const updateEntities = async (id) => {
+      const entitiesFromServer = await updateCall(id);
+      updateMSentences(sentence, entitiesFromServer.entities)
+    }
+
+    updateEntities(id);
   };
 
   return(
