@@ -17,12 +17,13 @@ const SentenceForm = ({ metaSentence, entities, editable, onClickWord, removeEnt
                 let position = getIndexFrom(word)
                 let text = entities[position].text
                 let type = entities[position].type
+                let color = entities[position].color
                 return(
                   <span key={text + type + index}>
                     {
                       <span
                         key={text.toString()}
-                        className="badge text-dark p-3 bg-info bg-gradient bg-opacity-50"
+                        className={`badge text-dark p-3 ${color} bg-gradient bg-opacity-50"`}
                       >
                         {text + ' '}
                         <b
